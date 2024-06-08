@@ -43,47 +43,78 @@
                 <v-container class="">
                   <v-row>
                     <v-col>
-                      <DxSelectBox
-                        :data-source="dtTipoDocumento"
-                      
-                        :value="cboTipoDocumento"
-                        display-expr="abreviatura"
-                        value-expr="idTipoDocumentoId"
-                      />
+                      <v-autocomplete
+                        :items="dtTipoDocumento"
+                        base-color="indigo"
+                        v-model="cboTipoDocumento"
+                        variant="solo"
+                        item-title="abreviatura"
+                        density="compact"
+                        color="indigo"
+                        item-value="idTipoDocumentoId"
+                        label="Tipo Documento"
+                      ></v-autocomplete>
                     </v-col>
                     <v-col>
-                      <DxTextBox
-                        placeholder="N° Documento"
-                        v-model="txtNroDocumento"
-                      />
+                      <v-text-field
+                        append-inner-icon="badge"
+                        density="compact"
+                        label="N° Documento"
+                        variant="solo"
+                        type="input"
+                        clearable
+                        color="indigo"
+                        maxlength="10"
+                        counter
+                        :v-model="txtNroDocumento"
+                      ></v-text-field>
                     </v-col>
                     <v-col>
                       <v-btn
-                        size="x-small"
-                        prepend-icon="search"
-                        rounded="lg"
-                        color="indigo"
-                        variant="tonal"
-                        >Buscar Dni</v-btn
+                        icon="manage_search"
+                        color="indigo darken-2"
+                        size="small"
                       >
+                      </v-btn>
                     </v-col>
                   </v-row>
                   <v-row>
                     <v-col>
-                      <DxTextBox placeholder="Nombres" v-model="txtNombres" />
+                      <v-text-field
+                        clearable
+                        label="Nombres"
+                        density="compact"
+                        variant="solo"
+                        v-model="txtNombres"
+                      ></v-text-field>
                     </v-col>
                     <v-col>
-                      <DxTextBox
-                        placeholder="Ap. Paterno"
+                      <v-text-field
+                        clearable
+                        label="Ap. Paterno"
+                        density="compact"
+                        variant="solo"
                         v-model="txtApPaterno"
-                      />
+                      ></v-text-field>
                     </v-col>
                     <v-col>
-                      <DxTextBox
-                        placeholder="Ap. Materno"
+                      <v-text-field
+                        clearable
+                        label="Ap. Materno"
+                        density="compact"
+                        variant="solo"
                         v-model="txtApMaterno"
-                      />
+                      ></v-text-field>
                     </v-col>
+                  </v-row>
+                  <v-row class="ma-1">
+                    <v-text-field
+                      clearable
+                      label="Nombres Completos"
+                      density="compact"
+                      variant="solo"
+                      v-model="txtNombresCompletos"
+                    ></v-text-field>
                   </v-row>
                   <v-row>
                     <v-col>
@@ -375,6 +406,7 @@
 import DxTextBox from "devextreme-vue/text-box";
 import DxSelectBox from "devextreme-vue/select-box";
 import DxDateBox from "devextreme-vue/date-box";
+
 export default {
   props: {
     modelValue: {
@@ -424,11 +456,21 @@ export default {
       txtCorreo: "",
       txtHijos: 0,
       txtLocker: "",
-      txtNroDocumento: 0,
+      txtNroDocumento: "",
+      txtNombresCompletos : "",
       txtTelefono: 0,
       dateFechaNacimiento: null,
       dateFechaIngreso: new Date(),
       dateFechaCese: null,
+      reglas: {
+        required: (value) => !!value || "Required.",
+        counter: (value) => value.length <= 20 || "Max 20 characters",
+        email: (value) => {
+          const pattern =
+            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+          return pattern.test(value) || "Invalid e-mail.";
+        },
+      },
     };
   },
   watch: {
@@ -451,7 +493,15 @@ export default {
         console.log(response.data);
       });
     },
-
+    submit() {
+      this.$refs.form.validate();
+      if (this.valid) {
+        alert("Form is valid");
+        // Realiza alguna acción, como enviar los datos
+      } else {
+        alert("Form is invalid");
+      }
+    },
     cerrarModal() {
       this.mostrarModal = false;
     },
