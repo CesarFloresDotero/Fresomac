@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Home from '../views/Home.vue'; // Importa tus componentes de vista
 import Personal from '../views/Personal.vue';
 import DetallesPersonal from '../components/DetallesTrabajador.vue';
-import GestionTrabajador from '../components/EditarTrabajador.vue';
+import GestionTrabajador from '../components/MantenimientoTrabajador.vue';
 import Vacaciones from '../views/Vacaciones.vue';
 import Contrato from '../views/Contrato.vue';
 import Capacitaciones from '../views/Capacitaciones.vue';

@@ -1,15 +1,22 @@
 <template>
   <v-dialog
     v-model="mostrarModal"
-    fullscreen
-    persistent
+    width="850"
     transition="dialog-bottom-transition"
+    persistent
   >
     <!-- Contenido del modal -->
     <v-container>
       <v-card height="700">
         <v-toolbar color="indigo-lighten-1">
           <v-toolbar-title class="text-h6">{{ descripcion }}</v-toolbar-title>
+          <v-btn
+            @click="cerrarModal"
+            icon="cancel"
+            class="ml-2 mr-2"
+            color="warning"
+            rounded="xl"
+          ></v-btn>
         </v-toolbar>
         <div class="d-flex flex-row">
           <v-tabs v-model="tab" color="primary" direction="vertical">
@@ -37,12 +44,11 @@
                   <v-row>
                     <v-col>
                       <DxSelectBox
-                        :items="dtTipoDocumentoId"
+                        :data-source="dtTipoDocumento"
+                      
+                        :value="cboTipoDocumento"
+                        display-expr="abreviatura"
                         value-expr="idTipoDocumentoId"
-                        display-expr="descripcion"
-                        hint="Tipo Documento"
-                        :show-clear-button="true"
-                        placeholder="Tipo Documento"
                       />
                     </v-col>
                     <v-col>
@@ -64,7 +70,7 @@
                   </v-row>
                   <v-row>
                     <v-col>
-                      <DxTextBox placeholder="Nombres" v-model="txtnombre" />
+                      <DxTextBox placeholder="Nombres" v-model="txtNombres" />
                     </v-col>
                     <v-col>
                       <DxTextBox
@@ -82,7 +88,7 @@
                   <v-row>
                     <v-col>
                       <DxSelectBox
-                        :items="dtEstadoCivil"
+                        :data-source="dtEstadoCivil"
                         value-expr="idTipoDocumentoId"
                         display-expr="descripcion"
                         hint="Area"
@@ -92,7 +98,7 @@
                     </v-col>
                     <v-col>
                       <DxSelectBox
-                        :items="cboDepartamento"
+                        :data-source="cboDepartamento"
                         value-expr="idTipoDocumentoId"
                         display-expr="descripcion"
                         hint="Tipo Documento"
@@ -102,7 +108,7 @@
                     </v-col>
                     <v-col>
                       <DxSelectBox
-                        :items="cboProvincia"
+                        :data-source="cboProvincia"
                         value-expr="idTipoDocumentoId"
                         display-expr="descripcion"
                         hint="Tipo Documento"
@@ -112,7 +118,7 @@
                     </v-col>
                     <v-col>
                       <DxSelectBox
-                        :items="cboDistrito"
+                        :data-source="cboDistrito"
                         value-expr="idTipoDocumentoId"
                         display-expr="descripcion"
                         hint="Tipo Documento"
@@ -129,7 +135,7 @@
                   <v-row>
                     <v-col>
                       <DxSelectBox
-                        :items="cboEmpresa"
+                        :data-source="cboEmpresa"
                         value-expr="idTipoDocumentoId"
                         display-expr="descripcion"
                         hint="Empresa"
@@ -139,7 +145,7 @@
                     </v-col>
                     <v-col>
                       <DxSelectBox
-                        :items="cboNacionalidad"
+                        :data-source="cboNacionalidad"
                         value-expr="idTipoDocumentoId"
                         display-expr="descripcion"
                         hint="Nacionalidad"
@@ -149,7 +155,7 @@
                     </v-col>
                     <v-col>
                       <DxSelectBox
-                        :items="cboEstado"
+                        :data-source="cboEstado"
                         value-expr="idTipoDocumentoId"
                         display-expr="descripcion"
                         hint="Estado"
@@ -167,14 +173,14 @@
                   <v-row>
                     <v-col>
                       <DxDateBox
-                        :value="now"
+                        :value="dateFechaIngreso"
                         :input-attr="{ 'aria-label': 'Date' }"
                         type="date"
                       />
                     </v-col>
                     <v-col>
                       <DxSelectBox
-                        :items="cboTipoTrabajador"
+                        :data-source="cboTipoTrabajador"
                         value-expr="idTipoDocumentoId"
                         display-expr="descripcion"
                         hint="Tipo Documento"
@@ -184,7 +190,7 @@
                     </v-col>
                     <v-col>
                       <DxSelectBox
-                        :items="cboContrato"
+                        :data-source="cboContrato"
                         value-expr="idTipoDocumentoId"
                         display-expr="descripcion"
                         hint="Tipo Documento"
@@ -196,7 +202,7 @@
                   <v-row>
                     <v-col>
                       <DxSelectBox
-                        :items="cboArea"
+                        :data-source="cboArea"
                         value-expr="idTipoDocumentoId"
                         display-expr="descripcion"
                         hint="Tipo Documento"
@@ -206,7 +212,7 @@
                     </v-col>
                     <v-col>
                       <DxSelectBox
-                        :items="cboCargo"
+                        :data-source="cboCargo"
                         value-expr="idTipoDocumentoId"
                         display-expr="descripcion"
                         hint="Tipo Documento"
@@ -216,7 +222,7 @@
                     </v-col>
                     <v-col>
                       <DxSelectBox
-                        :items="cboRegimenLaboral"
+                        :data-source="cboRegimenLaboral"
                         value-expr="idTipoDocumentoId"
                         display-expr="descripcion"
                         hint="Area"
@@ -226,7 +232,7 @@
                     </v-col>
                     <v-col>
                       <DxSelectBox
-                        :items="cboCese"
+                        :data-source="cboCese"
                         value-expr="idTipoDocumentoId"
                         display-expr="descripcion"
                         hint="Motivo Cese"
@@ -355,14 +361,7 @@
       <v-footer>
         <v-row>
           <v-col>
-            <v-btn
-              @click="cerrarModal"
-              prepend-icon="cancel"
-              class="ml-2 mr-2"
-              color="blue-grey"
-              rounded="xl"
-              >Cerrar</v-btn
-            ><v-btn prepend-icon="save" color="indigo" rounded="xl"
+            <v-btn prepend-icon="save" color="indigo" rounded="xl"
               >Guardar</v-btn
             >
           </v-col>
@@ -394,9 +393,10 @@ export default {
     return {
       mostrarModal: this.modelValue,
       tab: "personales",
-      dtTipoDocumentoId: [],
+      dtTipoDocumento: [],
       dtSexo: [],
       dtEstadoCivil: [],
+      cboTipoDocumento: 1,
       cboDepartamento: 0,
       cboProvincia: 0,
       cboDistrito: 0,
@@ -409,7 +409,7 @@ export default {
       cboCese: 0,
       cboTipoTrabajador: 0,
       cboTipoContrato: 0,
-      cboContratoAsignado: 0,
+      cboContrato: 0,
       cboArea: 0,
       cboCargo: 0,
       cboRegimenLaboral: 0,
@@ -420,7 +420,7 @@ export default {
       txtNombres: "",
       txtApPaterno: "",
       txtAvenida: "",
-      txtApPaterno: "",
+      txtApMaterno: "",
       txtCorreo: "",
       txtHijos: 0,
       txtLocker: "",
@@ -441,15 +441,17 @@ export default {
   },
 
   created() {
-    this.ListarTipoDocumentoId();
+    this.ListarTipoDocumento();
   },
 
   methods: {
-    async ListarTipoDocumentoId() {
-      this.$axios.get("TipoDocumentoId").then((response) => {
-        this.dtTipoDocumentoId = response.data;
+    async ListarTipoDocumento() {
+      this.$axios.get("TipoDocumento/Listar").then((response) => {
+        this.dtTipoDocumento = response.data;
+        console.log(response.data);
       });
     },
+
     cerrarModal() {
       this.mostrarModal = false;
     },

@@ -18,7 +18,8 @@ import "vue-toastification/dist/index.css";
 
 
 const axiosInstance = axios.create({
-  baseURL: "https://144.126.138.183/",
+ // baseURL: "https://144.126.138.183/",
+ baseURL : "http://localhost:5282/api/"
 });
 
 const app = createApp(App);

@@ -166,7 +166,7 @@ import { useToast } from "vue-toastification";
 import DxSelectBox from "devextreme-vue/select-box";
 import DetallesTrabajador from "../components/DetallesTrabajador.vue";
 import DatosGeneral from "../components/DatosGeneral.vue";
-import EditarTrabajador from "../components/EditarTrabajador.vue";
+import EditarTrabajador from "../components/MantenimientoTrabajador.vue";
 export default {
   components: {
     DxSelectBox,
@@ -241,17 +241,17 @@ export default {
     };
   },
   created() {
-    this.ListarArea();
-    this.ListarPais();
-    this.ListarCargo();
-    this.ListarEmpresa();
-    this.ListarEstado();
-    this.ListarTipoDocumentoId();
+ //   this.ListarArea();
+  //  this.ListarPais();
+  //  this.ListarCargo();
+  //  this.ListarEmpresa();
+ //   this.ListarEstado();
+  //  this.ListarTipoDocumentoId();
     this.ListarPersonal();
   },
   methods: {
     async ListarPersonal() {
-      this.$axios.get("Trabajador").then((response) => {
+      this.$axios.get("Trabajador/estado/1").then((response) => {
         this.dtPersonal = response.data.map((item) => {
           return { ...item, tipoDocumento: null };
         });
