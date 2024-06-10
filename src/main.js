@@ -1,4 +1,4 @@
-import "devextreme/dist/css/dx.fluent.saas.light.compact.css";
+import "devextreme/dist/css/dx.fluent.saas.light.css";
 import { createApp } from "vue";
 import App from "./App.vue";
 import axios from "axios";
@@ -19,7 +19,7 @@ import "vue-toastification/dist/index.css";
 
 const axiosInstance = axios.create({
  // baseURL: "https://144.126.138.183/",
- baseURL : "http://localhost:5282/api/"
+ baseURL : "https://localhost:7213/api/"
 });
 
 const app = createApp(App);

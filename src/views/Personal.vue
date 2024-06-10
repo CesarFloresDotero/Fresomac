@@ -20,7 +20,7 @@
       </DxColumn>
       <DxColumnChooser :enabled="true" />
       <DxLoadPanel :enabled="true" />
-      <DxPaging :page-size="16" />
+      <DxPaging :page-size="10" />
       <DxColumnFixing :enabled="true" />
       <DxFilterRow :visible="showFilterRow" />
       <DxHeaderFilter :visible="showHeaderFilter" />
@@ -78,10 +78,10 @@
         <div>
           <v-btn
             prepend-icon="add_circle"
-            size="x-small"
+            size="small"
             color="indigo"
             rounded="6"
-            variant="outlined"
+            variant="tonal"
             @click="NuevoPersonal()"
             >Nuevo</v-btn
           >
@@ -108,11 +108,11 @@
       <template #BotonExportar>
         <div>
           <v-btn
-            size="x-small"
+            size="small"
             prepend-icon="cloud_download"
             color="indigo"
             rounded="6"
-            variant="outlined"
+            variant="tonal"
             >Exportar</v-btn
           >
         </div>
