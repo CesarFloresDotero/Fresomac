@@ -119,8 +119,8 @@
                   <v-row>
                     <v-col>
                       <DxSelectBox
-                        :data-source="dtEstadoCivil"
-                        value-expr="idTipoDocumentoId"
+                        :data-source="dtDepartamento"
+                        value-expr="idDpto"
                         display-expr="descripcion"
                         hint="Area"
                         :show-clear-button="true"
@@ -128,34 +128,45 @@
                       />
                     </v-col>
                     <v-col>
-                      <DxSelectBox
-                        :data-source="cboDepartamento"
-                        value-expr="idTipoDocumentoId"
-                        display-expr="descripcion"
-                        hint="Tipo Documento"
-                        :show-clear-button="true"
-                        placeholder="Departamento"
-                      />
+                      <v-autocomplete
+                        :items="dtDepartamento"
+                        base-color="indigo"
+                        v-model="cboDepartamento"
+                        variant="solo"
+                        item-title="descripcion"
+                        density="compact"
+                        color="indigo"
+                        item-value="idDpto"
+                        label="Departamento"
+                        @update:modelValue="ListarProvincia"
+                      ></v-autocomplete>
                     </v-col>
                     <v-col>
-                      <DxSelectBox
-                        :data-source="cboProvincia"
-                        value-expr="idTipoDocumentoId"
-                        display-expr="descripcion"
-                        hint="Tipo Documento"
-                        :show-clear-button="true"
-                        placeholder="Provincia"
-                      />
+                      <v-autocomplete
+                        :items="dtProvincia"
+                        base-color="indigo"
+                        v-model="cboProvincia"
+                        variant="solo"
+                        item-title="descripcion"
+                        density="compact"
+                        color="indigo"
+                        item-value="idProvincia"
+                        label="Provincia"
+                          @update:modelValue="ListarDistrito"
+                      ></v-autocomplete>
                     </v-col>
                     <v-col>
-                      <DxSelectBox
-                        :data-source="cboDistrito"
-                        value-expr="idTipoDocumentoId"
-                        display-expr="descripcion"
-                        hint="Tipo Documento"
-                        :show-clear-button="true"
-                        placeholder="Distrito"
-                      />
+                      <v-autocomplete
+                        :items="dtDistrito"
+                        base-color="indigo"
+                        v-model="cboDistrito"
+                        variant="solo"
+                        item-title="descripcion"
+                        density="compact"
+                        color="indigo"
+                        item-value="idDistrito"
+                        label="Distrito"
+                      ></v-autocomplete>
                     </v-col>
                   </v-row>
                   <v-row>
@@ -428,6 +439,9 @@ export default {
       dtTipoDocumento: [],
       dtSexo: [],
       dtEstadoCivil: [],
+      dtDepartamento: [],
+      dtProvincia: [],
+      dtDistrito: [],
       cboTipoDocumento: 1,
       cboDepartamento: 0,
       cboProvincia: 0,
@@ -457,7 +471,7 @@ export default {
       txtHijos: 0,
       txtLocker: "",
       txtNroDocumento: "",
-      txtNombresCompletos : "",
+      txtNombresCompletos: "",
       txtTelefono: 0,
       dateFechaNacimiento: null,
       dateFechaIngreso: new Date(),
@@ -484,6 +498,7 @@ export default {
 
   created() {
     this.ListarTipoDocumento();
+    this.ListarDepartamento();
   },
 
   methods: {
@@ -492,6 +507,25 @@ export default {
         this.dtTipoDocumento = response.data;
         console.log(response.data);
       });
+    },
+    async ListarDepartamento() {
+      this.$axios.get("Direccion/Departamento").then((response) => {
+        this.dtDepartamento = response.data;
+      });
+    },
+    async ListarProvincia() {
+      this.$axios
+        .get("Direccion/Provincia/" + this.cboDepartamento)
+        .then((response) => {
+          this.dtProvincia = response.data;
+        });
+    },
+    async ListarDistrito() {
+      this.$axios
+        .get("Direccion/Distrito/" + this.cboProvincia)
+        .then((response) => {
+          this.dtDistrito = response.data;
+        });
     },
     submit() {
       this.$refs.form.validate();

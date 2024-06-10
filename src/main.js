@@ -1,10 +1,11 @@
+import "vuetify/styles";
 import "devextreme/dist/css/dx.fluent.saas.light.compact.css";
 import { createApp } from "vue";
 import App from "./App.vue";
 import axios from "axios";
 
 // Vuetify
-import "vuetify/styles";
+
 import { createVuetify } from "vuetify";
 import "material-design-icons-iconfont/dist/material-design-icons.css";
 import "@mdi/font/css/materialdesignicons.css";

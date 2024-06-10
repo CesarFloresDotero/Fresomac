@@ -260,7 +260,7 @@ export default {
 
     //TipoDocumentoId
     async ListarTipoDocumentoId() {
-      this.$axios.get("TipoDocumentoId").then((response) => {
+      this.$axios.get("TipoDocumento/Listar").then((response) => {
         this.dtTipoDocumentoId = response.data;
       });
     },
